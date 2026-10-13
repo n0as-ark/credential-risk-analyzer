@@ -1,4 +1,5 @@
 import math
+from collections import Counter
 
 def get_character_pools(password: str) -> dict:
     """return which character categories are present in the password:
@@ -75,7 +76,7 @@ def get_pool_size(password: str) -> int:
     return size
 
 def calculate_entropy(password: str) -> float:
-    """return an entropy value of the given password using the formula:
+    """return the entropy of the given password using the formula:
     entropy_bits = length x log2(pool_size)
     The empty-string case will return `0.0` without raising an error
 
@@ -98,3 +99,38 @@ def calculate_entropy(password: str) -> float:
         return 0.0
     else:
         return len(password)*math.log2(pool_size)
+
+def calculate_shannon_entropy(password: str) -> float:
+    """return the Shannon entropy of the given password using the formula:
+    -sum( p(c) x log2(p(c)) for each unique character c )
+    where p(c) = count of c / length of password
+
+    The result is multiplied by the length of the password so the units
+    (total bits) are comparable to calculate_entropy().
+    The empty-string case will return `0.0` without raising an error.
+    
+    >>> calculate_shannon_entropy("")
+    0.0
+
+    >>> calculate_shannon_entropy("aaaa")
+    0.0
+
+    >>> calculate_shannon_entropy("abab")
+    4.0
+
+    >>> round(calculate_shannon_entropy("Hello123!"), 2)
+    26.53
+    """
+
+    if not password:    # if password is an empty string
+        return 0.0
+
+    length = len(password)
+    counts = Counter(password)  # counts how many times each character appears
+
+    entropy = 0.0
+    for count in counts.values():
+        p = count / length
+        entropy += p * math.log2(1/p)   # same as -p x log2(p)
+
+    return entropy * length     # total for the whole password
