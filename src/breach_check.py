@@ -2,6 +2,7 @@ import hashlib
 import requests
 
 API_URL = "https://api.pwnedpasswords.com/range/"
+USER_AGENT = "credential-risk-analyzer/0.1 (+https://github.com/n0as-ark/credential-risk-analyzer)"
 
 def hash_password(password: str) -> str:
     """return the uppercase SHA-1 hex digest of the password
@@ -22,6 +23,7 @@ def check_breach(password:str, timeout: int = 5) -> int:
 
     response = requests.get(
         API_URL + prefix,
+        headers={"User-Agent": USER_AGENT},
         timeout=timeout,
         )
 
