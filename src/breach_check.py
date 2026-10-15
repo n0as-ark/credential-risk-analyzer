@@ -16,6 +16,9 @@ def hash_password(password: str) -> str:
 
 def check_breach(password:str, timeout: int = 5) -> int:
     """return how many times a password appears in known breaches (0 if none).
+
+    Raises requests.RequestException if the API can't be reached or returns
+    an error status; handling that is up to the caller.
     """
     hashed = hash_password(password)
     # Only the 5-character prefix is sent
