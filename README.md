@@ -9,8 +9,8 @@ I started this project after my [XOR encryption tool](https://n0as-ark.github.io
 Work in progress.
 
 - [x] Entropy calculation (pool-based and Shannon)
-- [ ] Breach check
-- [ ] Risk score
+- [x] Breach check
+- [x] Risk score
 
 ## Setup
 
