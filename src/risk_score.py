@@ -7,11 +7,11 @@ Scoring Rules:
 the score starts at 80 and rises by 4 points for every factor of ten in the count, capped at 100
 2. No breach match: the formula for calculating the score is 10 + 60 x (1 - min(entropy, 80)/80);
 entropy of 0 gives 70, and entropy of 80 bits or more gives 10, so risk falls steadily as entropy rises
-3. Labels: 0-29 is LOW, 30-59 is MEDIUM, and 60-100 is HIGH.
+3. Labels: 10-29 is LOW, 30-59 is MEDIUM, and 60-100 is HIGH.
 """
 
 def calculate_risk_score(entropy_bits: float, breach_count: int) -> float:
-    """return a risk score from 0 to 100 (higher = riskier).
+    """return a risk score from 10 to 100 (higher = riskier).
     
     Breached passwords score 80 and up, gaining 4 points per factor of ten
     in the breach count, capped at 100. Passwords with no breach match score
