@@ -1,5 +1,5 @@
-from src.entropy import calculate_entropy
-from src.breach_check import check_breach
+from entropy import calculate_entropy
+from breach_check import check_breach
 
 """
 Scoring Rules:
