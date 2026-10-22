@@ -47,8 +47,8 @@ def mask_password(password:str) -> str:
 
 def print_result(masked_password: str, result: dict) -> None:
     print(f"\n  Password:               {masked_password}")
-    print(f"  Entropy (Pool-based):   {result['Entropy']} bits")
-    print(f"  Entropy (Shannon):      {result['Shannon Entropy']} bits")
+    print(f"  Entropy (Pool-based):   {round(result['Entropy'],2)} bits")
+    print(f"  Entropy (Shannon):      {round(result['Shannon Entropy'],2)} bits")
 
     if result['Breach Status Known']:
         if result['Breach Count'] >0:
@@ -58,8 +58,8 @@ def print_result(masked_password: str, result: dict) -> None:
     else:
         print(f"  Breach Status:          UNKNOWN (offline mode or API error)")
 
-    print(f"  Risk score:             {result['Risk Score']} / 100")
-    print(f"  Risk label:             {result['Risk Label']}")
+    print(f"  Risk Score:             {round(result['Risk Score'],2)} / 100")
+    print(f"  Risk Label:             {result['Risk Label']}")
 
 def main():
     parser = argparse.ArgumentParser(
