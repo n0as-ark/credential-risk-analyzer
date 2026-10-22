@@ -34,8 +34,32 @@ def analyze_password(password: str, offline: bool = False) -> dict:
     result = analyze(entropy_bits, breach_count if known else 0)
     result['Shannon Entropy'] = shannon_bits
     result['Breach Status Known'] = known
+    result['Masked Password'] = mask_password(password)
 
     return result
+
+def mask_password(password:str) -> str:
+    """return a masked version of the password (only first + last char visible)
+    """
+    if len(password) <=2:
+        return "*" * len(password)
+    return password[0] + "*" * (len(password) - 2) + password[-1]
+
+def print_result(masked_password: str, result: dict) -> None:
+    print(f"\nPassword: {mask_password}")
+    print(f"  Entropy (Pool-based): {result['Entropy']} bits")
+    print(f"  Entropy (Shannon): {result['Shannon Entropy']} bits")
+
+    if result['Breach Status Known']:
+        if result['Breach Count'] >0:
+            print(f"  Breach Status:          FOUND in {result['Breach Count']:,} breaches")
+        else:
+            print(f"  Breach Status:          Not found in known breaches")
+    else:
+        print(f"  Breach Status:          UNKNOWN (offline mode or API error)")
+
+    print(f"  Risk score:               {result['Risk Score']} / 100")
+    print(f"  Risk label:               {result['Risk Label']}")
 
 def main():
     parser = argparse.ArgumentParser(
