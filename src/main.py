@@ -2,6 +2,7 @@ import argparse
 import getpass
 import requests
 import sys
+import csv
 
 from entropy import calculate_entropy, calculate_shannon_entropy
 from breach_check import check_breach
@@ -61,6 +62,18 @@ def print_result(masked_password: str, result: dict) -> None:
     print(f"  Risk Score:             {round(result['Risk Score'],2)} / 100")
     print(f"  Risk Label:             {result['Risk Label']}")
 
+def write_csv(results: list, output_path: str) -> None:
+    fieldnames = [
+        "Masked Password", "Entropy", "Shannon Entropy",
+        "Breach Count", "Breach Status", "Risk Score", "Risk Label"
+    ]
+    with open(output_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for result in results:
+            writer.writerow({k: result[k] for k in fieldnames})
+    print(f"\nResults written to {output_path}")
+
 def main():
     parser = argparse.ArgumentParser(
         description="Credential Risk Analyzer -- combines entropy and "
@@ -78,11 +91,31 @@ def main():
         help="Skip the online HIBP breach check entirely (entropy-only)",
     )
 
-    args = parser.parse_args()
+    parser.add_argument(
+        "--file", help="Path to a text file with one password per line (batch mode)"
+    )
 
-    password = args.password or getpass.getpass("Enter password to check: ")
-    result = analyze_password(password, offline=args.offline)
-    print_result(result['Masked Password'], result)
+    parser.add_argument(
+        "--output", help="Path to write a CSV report (batch mode only)"
+    )
+
+    args = parser.parse_args()
+    if args.file:
+        with open(args.file, "r") as f:
+            passwords = [line.strip() for line in f if line.strip()]
+
+        results = []
+        for pw in passwords:
+            result = analyze_password(pw, offline=args.offline)
+            print_result(result['Masked Password'], result)
+            results.append(result)
+
+        if args.output:
+            write_csv(results, args.output)
+    else:
+        password = args.password or getpass.getpass("Enter password to check: ")
+        result = analyze_password(password, offline=args.offline)
+        print_result(result['Masked Password'], result)
 
 if __name__ == "__main__":
     main()
