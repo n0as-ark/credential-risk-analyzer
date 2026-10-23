@@ -71,7 +71,7 @@ def analyze(entropy_bits: float, breach_count: int) -> dict:
     {'Entropy': 130.8, 'Breach Status': False, 'Breach Count': 0, 'Risk Score': 10.0, 'Risk Label': 'LOW'}
     """
     result = {}
-    result['Entropy'] = entropy_bits
+    result['Entropy'] = round(entropy_bits,2)
 
     if breach_count > 0:
         result['Breach Status'] = True
@@ -81,7 +81,7 @@ def analyze(entropy_bits: float, breach_count: int) -> dict:
     result['Breach Count'] = breach_count
 
     risk_score = calculate_risk_score(entropy_bits, breach_count)
-    result['Risk Score'] = risk_score
+    result['Risk Score'] = round(risk_score,2)
     result['Risk Label'] = risk_label(risk_score)
 
     return result
