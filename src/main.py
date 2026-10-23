@@ -33,7 +33,7 @@ def analyze_password(password: str, offline: bool = False) -> dict:
 
     known = breach_count is not None
     result = analyze(entropy_bits, breach_count if known else 0)
-    result['Shannon Entropy'] = shannon_bits
+    result['Shannon Entropy'] = round(shannon_bits,2)
     result['Breach Status Known'] = known
     result['Masked Password'] = mask_password(password)
 
