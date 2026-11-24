@@ -70,3 +70,7 @@ src/
 2. [How Password Entropy Works (and Where It Misleads)](https://n0as-ark.github.io/logbook/blog/how-password-entropy-works)
 3. [How "Have I Been Pwned" Checks Passwords Without Seeing Them](https://n0as-ark.github.io/logbook/blog/checking-passwords-without-revealing-them)
 4. [Same Entropy, Different Exposure: Testing My Credential Risk Analyzer](https://n0as-ark.github.io/logbook/blog/same-entropy-different-exposure)
+
+## License
+
+MIT
